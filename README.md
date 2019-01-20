@@ -18,7 +18,7 @@ In the second step you can use the previously generated feeders file to process 
 
 I hope this will save some time when setting up a project. I will add the machine setup footer to the generated file as soon as I have time :) The examples directory contains some example CSV files, generated for the FST-01 USB stick by Niibe Yutaka.
 
-
+```
 Usage:
   -h, --help                   print this help
   -v, --verbose                be verbose
@@ -27,3 +27,4 @@ Usage:
   -g, --gen_feeders            generate template feeders file,
                                requires -i and -f, will overwrite feeders file
   -o <file>, --output=<file>   TVM802 machine data output file
+```
