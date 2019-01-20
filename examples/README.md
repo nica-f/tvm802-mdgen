@@ -4,8 +4,9 @@ step #1 - generate an unconfigged feeder config:
 
 step #2 - edit the config
 
-for each uniqe componente add the actual feeder, nozzle to use, speed and
-height
+for each uniqe component add the actual feeder, nozzle to use, speed and
+height, foolowing example assumes that the configged file gets saved to
+  feeders-configged.csv
 
 step #3 - generate machine data
 
