@@ -17,3 +17,13 @@ From KiCad you generate the POS file for your project. Then you run the program 
 In the second step you can use the previously generated feeders file to process the KiCad POS file and generate a matching machine output, that will now automatcally assign the same feeder to the same components, along with the other parameters.
 
 I hope this will save some time when setting up a project. I will add the machine setup footer to the generated file as soon as I have time :) The examples directory contains some example CSV files, generated for the FST-01 USB stick by Niibe Yutaka.
+
+
+Usage:
+  -h, --help                   print this help
+  -v, --verbose                be verbose
+  -i <file>, --input=<file>    KiCad POS CSV iput file
+  -f <file>, --feeders=<file>  feeders CSV config file
+  -g, --gen_feeders            generate template feeders file,
+                               requires -i and -f, will overwrite feeders file
+  -o <file>, --output=<file>   TVM802 machine data output file
