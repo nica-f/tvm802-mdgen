@@ -15,6 +15,12 @@ import csv
 
 verbose = False
 
+# two fiducial marks, component name must be FID01 and FID02
+PCB_MARK1_X = 0.0
+PCB_MARK1_Y = 0.0
+PCB_MARK2_X = 0.0
+PCB_MARK2_Y = 0.0
+
 def gen_components_list (filename):
     ""
     # array to hold individual components use in the project
@@ -29,7 +35,14 @@ def gen_components_list (filename):
                 continue
             package = row[2]
             val = row[1]
-            components.append(package + ' ' + val)
+            if row[0] == "FID01":
+                PCB_MARK1_X = row[3]
+                PCB_MARK1_Y = row[4]
+            else if row[0] == "FID02":
+                PCB_MARK2_X = row[3]
+                PCB_MARK2_Y = row[4]
+            else
+                components.append(package + ' ' + val)
         components = sorted(set(components))
         return components
 
@@ -69,8 +82,9 @@ def map_components_feeders (pos_filename, cfeeders):
 def gen_machine_data (pos_filename, cfeeders, output_file):
     ""
     with open(pos_filename) as csvfile:
+        # First the components
         with open(output_file, 'w') as outfile:
-            outfile.write('"Designator","NozzleNum","StackNum","Mid X","Mid Y","Rotation","Height","Speed","Vision","Pressure","Explanation"\n')
+            outfile.write('"Designator","NozzleNum","StackNum","Mid X","Mid Y","Rotation","Height","Speed","Vision","Pressure","Explanation"\n""\n')
             readCSV = csv.reader(csvfile, delimiter=',')
             firstline = True
             for row in readCSV:
@@ -115,9 +129,78 @@ def gen_machine_data (pos_filename, cfeeders, output_file):
                 outfile.write('"' + "True" + '",')
                 # Explanation
                 outfile.write('"' + component + '"')
-                outfile.write('\n')
-            outfile.close()
-        csvfile.close()
+                outfile.write('\n\n')
+            csvfile.close()
+            # PCB panel setup
+            outfile.write('Puzzle\n')
+            # Mark 1 Real X
+            for i in range (1, 50, 1)
+                outfile.write('0.00\n')
+            outfile.write('\n')
+            # Mark 1 Real Y
+            for i in range (1, 50, 1)
+                outfile.write('0.00\n')
+            outfile.write('\n')
+            # Mark 1 Set X
+            for i in range (1, 50, 1)
+                outfile.write('0.00\n')
+            outfile.write('\n')
+            # Mark 1 Set Y
+            for i in range (1, 50, 1)
+                outfile.write('0.00\n')
+            outfile.write('\n')
+            # Mark 2 Real X
+            for i in range (1, 50, 1)
+                outfile.write('0.00\n')
+            outfile.write('\n')
+            # Mark 2 Real Y
+            for i in range (1, 50, 1)
+                outfile.write('0.00\n')
+            outfile.write('\n')
+            # Mark 2 Set X
+            for i in range (1, 50, 1)
+                outfile.write('0.00\n')
+            outfile.write('\n')
+            # Mark 2 Set Y
+            for i in range (1, 50, 1)
+                outfile.write('0.00\n')
+            outfile.write('\n')
+
+            # Other (?)
+            outfile.write('Other\n')
+            outfile.write('1.40\n') # PCB thickness?
+            outfile.write('1.80\n') # Mark template size ?
+            outfile.write('0.00\n') # ???
+            outfile.write('\n')
+
+            # Mark 1 enable
+            for i in range (1, 50, 1)
+                outfile.write('False\n')
+            outfile.write('\n')
+            # Mark 2 enable
+            for i in range (1, 50, 1)
+                outfile.write('False\n')
+            outfile.write('\n')
+
+            # Mark image configuration
+            outfile.write('Mark\n')
+            outfile.write('2\n')
+            outfile.write('2\n')
+            outfile.write('False\n')
+            outfile.write('6\n')
+            outfile.write('150\n')
+            # two Marks image data, each 44240 bytes, ASCII, format unknown
+            for i in range (1, 44240, 1)
+                outfile.write('A')
+            outfile.write('\n')
+            for i in range (1, 44240, 1)
+                outfile.write('A')
+            outfile.write('\n\n')
+
+            # IC stack config, 30 positions each
+            outfile.write('IC\n')
+
+        outfile.close()
     return
 
 
