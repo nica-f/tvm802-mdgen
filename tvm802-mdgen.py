@@ -16,10 +16,10 @@ import csv
 verbose = False
 
 # two fiducial marks, component name must be FID01 and FID02
-PCB_MARK1_X = 0.0
-PCB_MARK1_Y = 0.0
-PCB_MARK2_X = 0.0
-PCB_MARK2_Y = 0.0
+PCB_MARK1_X = "0.11"
+PCB_MARK1_Y = "0.12"
+PCB_MARK2_X = "0.21"
+PCB_MARK2_Y = "0.22"
 
 def gen_components_list (filename):
     ""
@@ -35,13 +35,7 @@ def gen_components_list (filename):
                 continue
             package = row[2]
             val = row[1]
-            if row[0] == "FID01":
-                PCB_MARK1_X = row[3]
-                PCB_MARK1_Y = row[4]
-            else if row[0] == "FID02":
-                PCB_MARK2_X = row[3]
-                PCB_MARK2_Y = row[4]
-            else
+            if row[0] != "FID01" and row[0] != "FID02":
                 components.append(package + ' ' + val)
         components = sorted(set(components))
         return components
@@ -92,77 +86,89 @@ def gen_machine_data (pos_filename, cfeeders, output_file):
                 if firstline:
                     firstline = False
                     continue
-                component = row[2] + ' ' + row[1]
-                # designator
-                outfile.write('"' + row[0] + '",')
-                # nozzle number (NozzleNum)
-                try:
-                    outfile.write('"' + cfeeders[component][1] + '",')
-                except KeyError:
-                    outfile.write('"",')
-                # feeder (aka StackNum)
-                try:
-                    outfile.write('"' + cfeeders[component][0] + '",')
-                except KeyError:
-                    outfile.write('"",')
-                # PosX (Mid X)
-                outfile.write('"' + row[3] + '",')
-                # PosY (Mid Y)
-                outfile.write('"' + row[4] + '",')
-                # Rot (Rotation)
-                outfile.write('"' + row[5] + '",')
-                # Height
-                try:
-                    outfile.write('"' + cfeeders[component][3] + '",')
-                except KeyError:
-                    outfile.write('"",')
-                # Speed
-                try:
-                    outfile.write('"' + cfeeders[component][2] + '",')
-                except KeyError:
-                    outfile.write('"",')
-                # Speed
-                outfile.write('"' + row[4] + '",')
-                # Vision
-                outfile.write('"' + "None" + '",')
-                # Pressure
-                outfile.write('"' + "True" + '",')
-                # Explanation
-                outfile.write('"' + component + '"')
-                outfile.write('\n\n')
+                if row[0] == "FID01":
+                    PCB_MARK1_X = row[3]
+                    PCB_MARK1_Y = row[4]
+                    # print("found FID01 at " + PCB_MARK1_X + ',' + PCB_MARK1_Y + '\n')
+                elif row[0] == "FID02":
+                    PCB_MARK2_X = row[3]
+                    PCB_MARK2_Y = row[4]
+                    # print("found FID01 at " + PCB_MARK1_X + ',' + PCB_MARK1_Y + '\n')
+                else:
+                    component = row[2] + ' ' + row[1]
+                    # designator
+                    outfile.write('"' + row[0] + '",')
+                    # nozzle number (NozzleNum)
+                    try:
+                        outfile.write('"' + cfeeders[component][1] + '",')
+                    except KeyError:
+                        outfile.write('"",')
+                    # feeder (aka StackNum)
+                    try:
+                        outfile.write('"' + cfeeders[component][0] + '",')
+                    except KeyError:
+                        outfile.write('"",')
+                    # PosX (Mid X)
+                    outfile.write('"' + row[3] + '",')
+                    # PosY (Mid Y)
+                    outfile.write('"' + row[4] + '",')
+                    # Rot (Rotation)
+                    outfile.write('"' + row[5] + '",')
+                    # Height
+                    try:
+                        outfile.write('"' + cfeeders[component][3] + '",')
+                    except KeyError:
+                        outfile.write('"",')
+                    # Speed
+                    try:
+                        outfile.write('"' + cfeeders[component][2] + '",')
+                    except KeyError:
+                        outfile.write('"",')
+                    # Vision
+                    outfile.write('"' + "None" + '",')
+                    # Pressure
+                    outfile.write('"' + "True" + '",')
+                    # Explanation
+                    outfile.write('"' + component + '"')
+                    outfile.write('\n')
             csvfile.close()
+            outfile.write('\n')
             # PCB panel setup
             outfile.write('Puzzle\n')
             # Mark 1 Real X
-            for i in range (1, 50, 1)
+            for i in range (1, 51, 1):
                 outfile.write('0.00\n')
             outfile.write('\n')
             # Mark 1 Real Y
-            for i in range (1, 50, 1)
+            for i in range (1, 51, 1):
                 outfile.write('0.00\n')
             outfile.write('\n')
             # Mark 1 Set X
-            for i in range (1, 50, 1)
+            outfile.write(PCB_MARK1_X + '\n');
+            for i in range (1, 50, 1):
                 outfile.write('0.00\n')
             outfile.write('\n')
             # Mark 1 Set Y
-            for i in range (1, 50, 1)
+            outfile.write(PCB_MARK1_Y + '\n');
+            for i in range (1, 50, 1):
                 outfile.write('0.00\n')
             outfile.write('\n')
             # Mark 2 Real X
-            for i in range (1, 50, 1)
+            for i in range (1, 51, 1):
                 outfile.write('0.00\n')
             outfile.write('\n')
             # Mark 2 Real Y
-            for i in range (1, 50, 1)
+            for i in range (1, 51, 1):
                 outfile.write('0.00\n')
             outfile.write('\n')
             # Mark 2 Set X
-            for i in range (1, 50, 1)
+            outfile.write(PCB_MARK2_X + '\n');
+            for i in range (1, 50, 1):
                 outfile.write('0.00\n')
             outfile.write('\n')
             # Mark 2 Set Y
-            for i in range (1, 50, 1)
+            outfile.write(PCB_MARK2_Y + '\n');
+            for i in range (1, 50, 1):
                 outfile.write('0.00\n')
             outfile.write('\n')
 
@@ -174,31 +180,130 @@ def gen_machine_data (pos_filename, cfeeders, output_file):
             outfile.write('\n')
 
             # Mark 1 enable
-            for i in range (1, 50, 1)
+            for i in range (1, 51, 1):
                 outfile.write('False\n')
             outfile.write('\n')
             # Mark 2 enable
-            for i in range (1, 50, 1)
+            for i in range (1, 51, 1):
                 outfile.write('False\n')
             outfile.write('\n')
 
             # Mark image configuration
             outfile.write('Mark\n')
-            outfile.write('2\n')
+            outfile.write('0\n')
             outfile.write('2\n')
             outfile.write('False\n')
             outfile.write('6\n')
             outfile.write('150\n')
-            # two Marks image data, each 44240 bytes, ASCII, format unknown
-            for i in range (1, 44240, 1)
-                outfile.write('A')
+            # two Marks image data, base64 encoded, 8 bit raw bitmap,
+            # size varies with selected mark size, formula unclear yet 2.5mm mark will become 208x208 pixel
+            #for i in range (0, 44240, 1):
+            #    outfile.write('A')
+            #outfile.write('\n')
+            #for i in range (0, 44240, 1):
+            #    outfile.write('A')
+            #outfile.write('\n\n')
             outfile.write('\n')
-            for i in range (1, 44240, 1)
-                outfile.write('A')
-            outfile.write('\n\n')
 
             # IC stack config, 30 positions each
             outfile.write('IC\n')
+            for i in range (1, 31, 1):
+                outfile.write('0.00\n')
+            outfile.write('\n')
+            for i in range (1, 31, 1):
+                outfile.write('0.00\n')
+            outfile.write('\n')
+            for i in range (1, 31, 1):
+                outfile.write('0.00\n')
+            outfile.write('\n')
+            for i in range (1, 31, 1):
+                outfile.write('0.00\n')
+            outfile.write('\n')
+
+            for i in range (1, 31, 1):
+                outfile.write('1\n')
+            outfile.write('\n')
+
+            for i in range (1, 31, 1):
+                outfile.write('1\n')
+            outfile.write('\n')
+
+            # IC stack names
+            for i in range (1, 31, 1):
+                outfile.write('\n')
+            for i in range (1, 31, 1):
+                outfile.write('0\n')
+            for i in range (1, 31, 1):
+                outfile.write('0\n')
+            outfile.write('\n')
+            for i in range (1, 31, 1):
+                outfile.write('0\n')
+            outfile.write('\n')
+            for i in range (1, 31, 1):
+                outfile.write('0\n')
+            outfile.write('\n')
+            for i in range (1, 31, 1):
+                outfile.write('0.1\n')
+            outfile.write('\n')
+
+            outfile.write('PCB\n')
+            outfile.write('1\n')
+            outfile.write('1\n')
+            outfile.write('\n')
+            outfile.write('True\n')
+            outfile.write('\n')
+            outfile.write('0\n')
+            outfile.write('\n')
+            outfile.write('0\n')
+            outfile.write('\n')
+            outfile.write('0\n')
+            outfile.write('\n')
+            outfile.write('0.00\n')
+            outfile.write('0.00\n')
+            outfile.write('0.00\n')
+            outfile.write('0.00\n')
+            outfile.write('0.00\n')
+            outfile.write('0.00\n')
+
+            outfile.write('Stack\n')
+            for i in range (1, 31, 1):
+                outfile.write('CL%02d' %i + '\n')
+            for i in range (1, 31, 1):
+                outfile.write('CB%02d' %i + '\n')
+            outfile.write('\n')
+
+            for i in range (1, 31, 1):
+                outfile.write('0\n')
+            for i in range (1, 31, 1):
+                outfile.write('0\n')
+            outfile.write('\n')
+
+            for i in range (1, 31, 1):
+                outfile.write('0\n')
+            for i in range (1, 31, 1):
+                outfile.write('0\n')
+            outfile.write('\n')
+
+            # height
+            for i in range (1, 31, 1):
+                outfile.write('0.1\n')
+            for i in range (1, 31, 1):
+                outfile.write('0.1\n')
+            outfile.write('\n')
+
+            # pick angle
+            for i in range (1, 31, 1):
+                outfile.write('90\n')
+            for i in range (1, 31, 1):
+                outfile.write('0\n')
+            outfile.write('\n')
+
+            # comp threshold
+            for i in range (1, 31, 1):
+                outfile.write('50\n')
+            for i in range (1, 31, 1):
+                outfile.write('50\n')
+            outfile.write('\n')
 
         outfile.close()
     return
