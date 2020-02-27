@@ -28,3 +28,11 @@ Usage:
                                requires -i and -f, will overwrite feeders file
   -o <file>, --output=<file>   TVM802 machine data output file
 ```
+
+#Notes
+Since the 'SurfaceMount' program runs on Windows it requires DOS text file
+line endings in the CSV file, which can be converted from Unix/Linux to
+Windows/DOS using SED:
+```
+sed 's/$/\r/' input.txt > output.txt
+```

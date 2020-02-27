@@ -16,10 +16,10 @@ import csv
 verbose = False
 
 # two fiducial marks, component name must be FID01 and FID02
-PCB_MARK1_X = "0.11"
-PCB_MARK1_Y = "0.12"
-PCB_MARK2_X = "0.21"
-PCB_MARK2_Y = "0.22"
+PCB_MARK1_X = "0.00"
+PCB_MARK1_Y = "0.00"
+PCB_MARK2_X = "0.00"
+PCB_MARK2_Y = "0.00"
 
 def gen_components_list (filename):
     ""
@@ -80,7 +80,7 @@ def gen_machine_data (pos_filename, cfeeders, output_file):
         # we get from KiCad POS files
         # First the components
         with open(output_file, 'w') as outfile:
-            outfile.write('"Designator","NozzleNum","StackNum","Mid X","Mid Y","Rotation","Height","Speed","Vision","Pressure","Explanation"\n""\n')
+            outfile.write('"Designator","NozzleNum","StackNum","Mid X","Mid Y","Rotation","Height","Speed","Vision","Pressure","Explanation"\r\n""\r\n')
             readCSV = csv.reader(csvfile, delimiter=',')
             firstline = True
             for row in readCSV:
@@ -91,11 +91,11 @@ def gen_machine_data (pos_filename, cfeeders, output_file):
                 if row[0] == "FID01":
                     PCB_MARK1_X = row[3]
                     PCB_MARK1_Y = row[4]
-                    # print("found FID01 at " + PCB_MARK1_X + ',' + PCB_MARK1_Y + '\n')
+                    # print("found FID01 at " + PCB_MARK1_X + ',' + PCB_MARK1_Y + '\r\n')
                 elif row[0] == "FID02":
                     PCB_MARK2_X = row[3]
                     PCB_MARK2_Y = row[4]
-                    # print("found FID01 at " + PCB_MARK1_X + ',' + PCB_MARK1_Y + '\n')
+                    # print("found FID01 at " + PCB_MARK1_X + ',' + PCB_MARK1_Y + '\r\n')
                 else:
                     component = row[2] + ' ' + row[1]
                     # designator
@@ -132,64 +132,72 @@ def gen_machine_data (pos_filename, cfeeders, output_file):
                     outfile.write('"' + "True" + '",')
                     # Explanation
                     outfile.write('"' + component + '"')
-                    outfile.write('\n')
+                    outfile.write('\r\n')
             csvfile.close()
-            outfile.write('\n')
+            outfile.write('\r\n')
             # PCB panel setup
-            outfile.write('Puzzle\n')
+            outfile.write('Puzzle\r\n')
             # Mark 1 Real X
             for i in range (1, 51, 1):
-                outfile.write('0.00\n')
-            outfile.write('\n')
+                outfile.write('0.00\r\n')
+            outfile.write('\r\n')
             # Mark 1 Real Y
             for i in range (1, 51, 1):
-                outfile.write('0.00\n')
-            outfile.write('\n')
+                outfile.write('0.00\r\n')
+            outfile.write('\r\n')
             # Mark 1 Set X
-            outfile.write(PCB_MARK1_X + '\n');
+            outfile.write(PCB_MARK1_X + '\r\n');
             for i in range (1, 50, 1):
-                outfile.write('0.00\n')
-            outfile.write('\n')
+                outfile.write('0.00\r\n')
+            outfile.write('\r\n')
             # Mark 1 Set Y
-            outfile.write(PCB_MARK1_Y + '\n');
+            outfile.write(PCB_MARK1_Y + '\r\n');
             for i in range (1, 50, 1):
-                outfile.write('0.00\n')
-            outfile.write('\n')
+                outfile.write('0.00\r\n')
+            outfile.write('\r\n')
             # Mark 2 Real X
             for i in range (1, 51, 1):
-                outfile.write('0.00\n')
-            outfile.write('\n')
+                outfile.write('0.00\r\n')
+            outfile.write('\r\n')
             # Mark 2 Real Y
             for i in range (1, 51, 1):
-                outfile.write('0.00\n')
-            outfile.write('\n')
+                outfile.write('0.00\r\n')
+            outfile.write('\r\n')
             # Mark 2 Set X
-            outfile.write(PCB_MARK2_X + '\n');
+            outfile.write(PCB_MARK2_X + '\r\n');
             for i in range (1, 50, 1):
-                outfile.write('0.00\n')
-            outfile.write('\n')
+                outfile.write('0.00\r\n')
+            outfile.write('\r\n')
             # Mark 2 Set Y
-            outfile.write(PCB_MARK2_Y + '\n');
+            outfile.write(PCB_MARK2_Y + '\r\n');
             for i in range (1, 50, 1):
-                outfile.write('0.00\n')
-            outfile.write('\n')
+                outfile.write('0.00\r\n')
+            outfile.write('\r\n')
 
             # Other (?)
-            outfile.write('Other\n')
-            outfile.write('1.40\n') # PCB thickness?
-            outfile.write('1.80\n') # Mark template size ?
-            outfile.write('0.00\n') # ???
-            outfile.write('\n')
+            outfile.write('Other\r\n')
+            outfile.write('1.40\r\n') # PCB thickness?
+            outfile.write('1.80\r\n') # Mark template size ?
+            outfile.write('0.00\r\n') # ???
+            outfile.write('\r\n')
 
             # Mark 1 enable
-            # if MARK1 is set, set to TRUE
-            for i in range (1, 51, 1):
-                outfile.write('False\n')
-            outfile.write('\n')
+            # if MARK is set, set to TRUE
+            if PCB_MARK1_X != "0.00" or PCB_MARK1_Y != "0.00":
+                outfile.write('True\r\n')
+            else:
+                outfile.write('False\r\n')
+            for i in range (1, 50, 1):
+                outfile.write('False\r\n')
+            outfile.write('\r\n')
             # Mark 2 enable
-            for i in range (1, 51, 1):
-                outfile.write('False\n')
-            outfile.write('\n')
+            if PCB_MARK2_X != "0.00" or PCB_MARK2_Y != "0.00":
+                outfile.write('True\r\n')
+            else:
+                outfile.write('False\r\n')
+            for i in range (1, 50, 1):
+                outfile.write('False\r\n')
+            outfile.write('\r\n')
 
         outfile.close()
     return
@@ -254,6 +262,7 @@ def main(argv):
             sys.exit(2);
         components = gen_components_list(input_filename)
         with open(feeders_filename,'w') as resultFile:
+            # this is an internal file so no DOS/Windows line endings
             resultFile.write('"Component","Feeder","Nozzle","Speed","Height"\n')
             for i in range(0, len(components)):
                 resultFile.write('"' + components[i] + '"' + ',"","1/2","100","0.5"\n')
