@@ -76,6 +76,8 @@ def map_components_feeders (pos_filename, cfeeders):
 def gen_machine_data (pos_filename, cfeeders, output_file):
     ""
     with open(pos_filename) as csvfile:
+        # the machine accepts incomplete files, only write out what
+        # we get from KiCad POS files
         # First the components
         with open(output_file, 'w') as outfile:
             outfile.write('"Designator","NozzleNum","StackNum","Mid X","Mid Y","Rotation","Height","Speed","Vision","Pressure","Explanation"\n""\n')
@@ -180,129 +182,13 @@ def gen_machine_data (pos_filename, cfeeders, output_file):
             outfile.write('\n')
 
             # Mark 1 enable
+            # if MARK1 is set, set to TRUE
             for i in range (1, 51, 1):
                 outfile.write('False\n')
             outfile.write('\n')
             # Mark 2 enable
             for i in range (1, 51, 1):
                 outfile.write('False\n')
-            outfile.write('\n')
-
-            # Mark image configuration
-            outfile.write('Mark\n')
-            outfile.write('0\n')
-            outfile.write('2\n')
-            outfile.write('False\n')
-            outfile.write('6\n')
-            outfile.write('150\n')
-            # two Marks image data, base64 encoded, 8 bit raw bitmap,
-            # size varies with selected mark size, formula unclear yet 2.5mm mark will become 208x208 pixel
-            #for i in range (0, 44240, 1):
-            #    outfile.write('A')
-            #outfile.write('\n')
-            #for i in range (0, 44240, 1):
-            #    outfile.write('A')
-            #outfile.write('\n\n')
-            outfile.write('\n')
-
-            # IC stack config, 30 positions each
-            outfile.write('IC\n')
-            for i in range (1, 31, 1):
-                outfile.write('0.00\n')
-            outfile.write('\n')
-            for i in range (1, 31, 1):
-                outfile.write('0.00\n')
-            outfile.write('\n')
-            for i in range (1, 31, 1):
-                outfile.write('0.00\n')
-            outfile.write('\n')
-            for i in range (1, 31, 1):
-                outfile.write('0.00\n')
-            outfile.write('\n')
-
-            for i in range (1, 31, 1):
-                outfile.write('1\n')
-            outfile.write('\n')
-
-            for i in range (1, 31, 1):
-                outfile.write('1\n')
-            outfile.write('\n')
-
-            # IC stack names
-            for i in range (1, 31, 1):
-                outfile.write('\n')
-            for i in range (1, 31, 1):
-                outfile.write('0\n')
-            for i in range (1, 31, 1):
-                outfile.write('0\n')
-            outfile.write('\n')
-            for i in range (1, 31, 1):
-                outfile.write('0\n')
-            outfile.write('\n')
-            for i in range (1, 31, 1):
-                outfile.write('0\n')
-            outfile.write('\n')
-            for i in range (1, 31, 1):
-                outfile.write('0.1\n')
-            outfile.write('\n')
-
-            outfile.write('PCB\n')
-            outfile.write('1\n')
-            outfile.write('1\n')
-            outfile.write('\n')
-            outfile.write('True\n')
-            outfile.write('\n')
-            outfile.write('0\n')
-            outfile.write('\n')
-            outfile.write('0\n')
-            outfile.write('\n')
-            outfile.write('0\n')
-            outfile.write('\n')
-            outfile.write('0.00\n')
-            outfile.write('0.00\n')
-            outfile.write('0.00\n')
-            outfile.write('0.00\n')
-            outfile.write('0.00\n')
-            outfile.write('0.00\n')
-
-            outfile.write('Stack\n')
-            for i in range (1, 31, 1):
-                outfile.write('CL%02d' %i + '\n')
-            for i in range (1, 31, 1):
-                outfile.write('CB%02d' %i + '\n')
-            outfile.write('\n')
-
-            for i in range (1, 31, 1):
-                outfile.write('0\n')
-            for i in range (1, 31, 1):
-                outfile.write('0\n')
-            outfile.write('\n')
-
-            for i in range (1, 31, 1):
-                outfile.write('0\n')
-            for i in range (1, 31, 1):
-                outfile.write('0\n')
-            outfile.write('\n')
-
-            # height
-            for i in range (1, 31, 1):
-                outfile.write('0.1\n')
-            for i in range (1, 31, 1):
-                outfile.write('0.1\n')
-            outfile.write('\n')
-
-            # pick angle
-            for i in range (1, 31, 1):
-                outfile.write('90\n')
-            for i in range (1, 31, 1):
-                outfile.write('0\n')
-            outfile.write('\n')
-
-            # comp threshold
-            for i in range (1, 31, 1):
-                outfile.write('50\n')
-            for i in range (1, 31, 1):
-                outfile.write('50\n')
             outfile.write('\n')
 
         outfile.close()
