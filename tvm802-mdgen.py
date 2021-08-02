@@ -15,12 +15,6 @@ import csv
 
 verbose = False
 
-# two fiducial marks, component name must be FID01 and FID02
-PCB_MARK1_X = "0.00"
-PCB_MARK1_Y = "0.00"
-PCB_MARK2_X = "0.00"
-PCB_MARK2_Y = "0.00"
-
 def gen_components_list (filename):
     ""
     # array to hold individual components use in the project
@@ -75,6 +69,12 @@ def map_components_feeders (pos_filename, cfeeders):
 
 def gen_machine_data (pos_filename, cfeeders, output_file):
     ""
+    # two fiducial marks, component name must be FID01 and FID02
+    PCB_MARK1_X = "0.00"
+    PCB_MARK1_Y = "0.00"
+    PCB_MARK2_X = "0.00"
+    PCB_MARK2_Y = "0.00"
+
     with open(pos_filename) as csvfile:
         # the machine accepts incomplete files, only write out what
         # we get from KiCad POS files
